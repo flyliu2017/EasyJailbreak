@@ -8,23 +8,25 @@ from easyjailbreak.models.huggingface_model import HuggingfaceModel
 sys.path.append(os.getcwd())
 
 generation_config = {'max_new_tokens': 512}
-llama_model_path = 'meta-llama/Llama-2-7b-chat-hf'
-model_name = 'Llama-2'
-model = AutoModelForCausalLM.from_pretrained(llama_model_path)
-tokenizers = AutoTokenizer.from_pretrained(llama_model_path)
-llama2_7b_chat = HuggingfaceModel(model=model, tokenizer=tokenizers, model_name=model_name,
-                                  generation_config=generation_config)
+target_model_path = 'microsoft/Phi-3-mini-4k-instruct'
+model_name = 'phi3'
+model = AutoModelForCausalLM.from_pretrained(target_model_path)
+tokenizers = AutoTokenizer.from_pretrained(target_model_path)
+target_model = HuggingfaceModel(model=model, tokenizer=tokenizers, model_name=model_name,
+                                generation_config=generation_config)
 
-chat_name = 'gpt-4-1106-preview'
-openai_key = 'your key'
-GPT4 = OpenaiModel(model_name=chat_name, api_keys=openai_key)
+chat_name = 'microsoft/Phi-3-small-8k-instruct'
+model = AutoModelForCausalLM.from_pretrained(target_model_path)
+tokenizers = AutoTokenizer.from_pretrained(target_model_path)
+attack_model = HuggingfaceModel(model=model, tokenizer=tokenizers, model_name='phi3-small',
+                                generation_config=generation_config)
 
 dataset_name = 'AdvBench'
 dataset = JailbreakDataset(dataset_name)
 
-attacker = ReNeLLM(attack_model=GPT4,
-                   target_model=llama2_7b_chat,
-                   eval_model=GPT4,
+attacker = ReNeLLM(attack_model=attack_model,
+                   target_model=target_model,
+                   eval_model=attack_model,
                    jailbreak_datasets=dataset)
 attacker.attack()
 attacker.jailbreak_datasets.save_to_jsonl('AdvBench_renellm.jsonl')
