@@ -9,7 +9,7 @@ sys.path.append(os.getcwd())
 
 generation_config = {'max_new_tokens': 512}
 target_model_path = 'microsoft/Phi-3-mini-4k-instruct'
-model_name = 'phi3'
+model_name = 'chatgpt'
 model = AutoModelForCausalLM.from_pretrained(target_model_path)
 tokenizers = AutoTokenizer.from_pretrained(target_model_path)
 target_model = HuggingfaceModel(model=model, tokenizer=tokenizers, model_name=model_name,
@@ -18,7 +18,7 @@ target_model = HuggingfaceModel(model=model, tokenizer=tokenizers, model_name=mo
 chat_name = 'microsoft/Phi-3-small-8k-instruct'
 model = AutoModelForCausalLM.from_pretrained(target_model_path)
 tokenizers = AutoTokenizer.from_pretrained(target_model_path)
-attack_model = HuggingfaceModel(model=model, tokenizer=tokenizers, model_name='phi3-small',
+attack_model = HuggingfaceModel(model=model, tokenizer=tokenizers, model_name='chatgpt',
                                 generation_config=generation_config)
 
 dataset_name = 'AdvBench'
