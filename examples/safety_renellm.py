@@ -16,8 +16,8 @@ target_model = HuggingfaceModel(model=model, tokenizer=tokenizers, model_name=mo
                                 generation_config=generation_config)
 
 chat_name = 'microsoft/Phi-3-small-8k-instruct'
-model = AutoModelForCausalLM.from_pretrained(target_model_path)
-tokenizers = AutoTokenizer.from_pretrained(target_model_path)
+model = AutoModelForCausalLM.from_pretrained(chat_name)
+tokenizers = AutoTokenizer.from_pretrained(chat_name)
 attack_model = HuggingfaceModel(model=model, tokenizer=tokenizers, model_name='llama-2',
                                 generation_config=generation_config)
 
