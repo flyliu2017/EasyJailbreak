@@ -1,6 +1,8 @@
 """
 这里提供了一些可能会被很多攻击方法使用的对模型的复杂操作
 """
+import json
+import os
 from typing import List
 import copy
 import re
@@ -478,3 +480,19 @@ def parse_res(res, target):
     return content_list, res_list
 
 
+def read_json(path, lines=False):
+    with open(path, encoding='utf8') as f:
+        base, ext = os.path.splitext(path)
+        if lines or ext == '.jsonl':
+            return [json.loads(s) for s in f.readlines()]
+        return json.load(f)
+
+
+def save_json(obj, path, lines=False):
+    with open(path, 'w', encoding='utf8') as f:
+        if lines:
+            assert isinstance(obj, list)
+            for n in obj:
+                f.write(json.dumps(n, ensure_ascii=False) + '\n')
+        else:
+            json.dump(obj, f, ensure_ascii=False, indent=2)
